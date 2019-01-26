@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ -L /bin/sed ] ; then
+	VER=`sed --version 2>&1 | grep ver`
+	case ${VER} in
+	GNU*)	;;
+	*)	echo "$0: Non-sane: non-GNU sed (symlink) unexpected" 1>&2
+		exit 1
+	;;
+	esac
+fi
+
+TOTFREE=`free 2>&1 | sed ' s/.*: *// ; s/ [^0-9]*.*//' | tail -1`
+if [ "${TOTFREE}" -lt 30000 ] ; then
+	echo "$0: Non-sane: insufficient memory for building uClibc" 1>&2
+	exit 1
+fi
+
+echo "$0: ...OK :)"

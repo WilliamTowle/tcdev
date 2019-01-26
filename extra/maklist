@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -z "$1" ] ; then
+	echo "$0: Expected config/package.mak file[s]" 1>&2
+	exit 1
+fi
+
+(	while [ "$1" ] ; do
+		grep '^include ' $1 | sed 's/include //'
+		shift
+	done
+) | sort -u

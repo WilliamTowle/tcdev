@@ -1,0 +1,71 @@
+STATUS/TODO/WISHLIST
+====================
+
+Earlgrey - 2.0.40 kernel (modular, ~400K) w/ 600K ramdisk
+	* uClibc 0.9.20 and busybox 0.65.x
+	* gcc 2.95.3-2, bin86 0.16.17
+	! fails build-in-self - no vfork() (gcc 2.7.2.3)
+
+	- *b1005: HAVE_OWN_AWK uClibc -> config.mak
+	- 0.6.x uClibc/config.mak as per 0.9.x
+
+
+Sencha (sen) - 2.2.26 kernel (monolithic, ~620k) w/ 550K ramdisk
+	* uClibc 0.9.26+busybox 1.1.0
+	* gcc 2.95.3-2, bin86 0.16.17, binutils 2.16.1
+	* build-in-self capable
+
+	- *b1005: HAVE_OWN_AWK uClibc -> config.mak
+	- 0.6.x uClibc/config.mak as per 0.9.x
+
+
+Bancha (ban) - 2.4.32 kernel (monolithic, 1_121_024 bytes) w/ 550K rd
+	* uClibc 0.9.26+busybox 1.1.0
+	* gcc 2.95.3-2, binutils 2.17
+	* build-in-self capable
+	? kernel[2.4] headers for XDC - automatic??
+
+	- *b1005: HAVE_OWN_AWK uClibc -> config.mak
+	- 0.6.x uClibc/config.mak as per 0.9.x
+
+
+Lung Ching (lch) - 2.6.x kernel (monolithic, 2_479_632 bytes), 570K rd
+	* uClibc 0.9.28+busybox 1.7.1
+	* gcc 4.1.2, binutils 2.17
+	* build-in-self capable
+	? kernel[2.6] headers for XDC - automatic??
+
+	- *b1005: HAVE_OWN_AWK uClibc -> config.mak
+	- 0.6.x uClibc/config.mak as per 0.9.x
+	- newer gcc - v4.2.0?
+	- check uClibc 0.9.29 (__UCLIBC_CTOR_DTOR__, SHARED, etc?)
+
+
+Mao Feng (maof) - 2.6.x kernel (monolithic, size unchecked)
+	* uClibc 0.9.28+busybox 1.6.0
+	* gcc 4.1.2, binutils 2.17
+
+	- *b1005: HAVE_OWN_AWK uClibc -> config.mak
+	- 0.6.x uClibc/config.mak as per 0.9.x
+	- newer gcc - v4.2.0?
+
+
+geex-{06|07}xxxx - 2.6.x kernel (monolithic, size unchecked)
+	* uClibc 0.9.28+busybox 1.2.2
+	* gcc 4.1.2
+
+	- *b1005: HAVE_OWN_AWK uClibc -> config.mak
+	- 0.6.x uClibc/config.mak as per 0.9.x
+	- newer gcc - v4.2.0; try binutils 2.17?
+
+
+freglx/tcdev
+------------
+
+- coreutils --prefix= and sanity of PATH?
+- adaptation to not install manuals? (coreutils, diffutils, patch, make)
+- no attempt to not install manuals: bison, binutils, gcc
+- uClibc-dev (0.9.20) needs > 24MB
+- /!\ uClibc-dev 0.9.20: bswap.h needs [glibc-devel] byteswap.h
+- /!\ Clibc-dev 0.9.20: elf.h needs stdint.h (FIXED in 0.9.21)
+- ...Clibc-dev 0.9.20: bswap.h needs stdint replacement (see elf.h)

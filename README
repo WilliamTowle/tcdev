@@ -1,0 +1,56 @@
+-----------------------------------------------------------------------
+  This archive contains the Makefile-based versions of software in
+the STUBS project's Configurations releases. Please note that the
+STUBS Toolchain and Utility Build Suite has a web page at:
+	http://www.angelfire.com/linux/wills/stubs.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  Alongside this file should be various directories, which are
+versioned by a combination of name and number (if obsolete/deprecated
+or current) or date (if "development").
+
+  Of these, the following directories create working chroot
+environments based on the stated software combinations. All require a
+reasonably feature-complete build environment as a start point
+(unlike the published material in STUBS' Earlgrey/Franki
+Configurations releases):
+
+  earlgrey-0.6.x: Earlgrey environment, ie:
+	- kernel 2.0.40
+	- uClibc 0.9.20
+	- busybox 0.60.5
+	- gcc 2.7.2.3 (toolchain only, does not cross compile)
+	- gcc 2.95.3 (compiles applications, also in environment)
+
+  sencha-0.5/6.x: chroot environment featuring:
+	- kernel 2.2.26
+	- uClibc 0.9.20
+	- busybox 0.60.5
+	- gcc 2.7.2.3 (toolchain only, does not cross compile)
+	- gcc 2.95.3 (compiles applications, also in environment)
+
+  bancha-0.5/6.x: chroot environment featuring:
+	- kernel 2.4.x
+	- uClibc 0.9.28
+	- busybox 1.01
+	- possibly i386 only, has compiler (gcc 2.95.3)
+
+  lching-0.5/6.x: chroot environment featuring
+	- kernel 2.6.x
+	- uClibc 0.9.28
+	- busybox 1.4.0
+	- gcc 4.1.1 (based on Gentoo patches)
+
+  maof-0.5/6.x: as Lung Ching, for mips/mipsel
+
+  geex-06xxxx: gcc 4.1.1 chroot inspired by GeeXboX 1.0
+
+  The download URLs for all necessary software and patches should be
+listed in the corresponding Makefiles. These are not automatically
+retrieved (again, this funtionality IS in the STUBS scripts).
+
+  All of the subdirectories have Makefiles that give (very) basic
+help, and have targets for a host toolchain (`make htc`), a cross
+compilation toolchain (`make xtc`), and the [cross compiled]
+target "distribution" (`make xdc`) where this has been perfected. A
+`make all` rule attempts to build all of these in turn.

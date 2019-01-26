@@ -1,0 +1,24 @@
+KERNEL_HEADERS="/usr2/wills-0708/tcdev-0.6.11b0829/geex-070821/toolchain/usr/i386-geexbox-linux-uclibc/usr/include/"
+SHARED_LIB_LOADER_PREFIX="/lib"
+RUNTIME_PREFIX="/"
+CROSS_COMPILER_PREFIX="/usr2/wills-0708/tcdev-0.6.11b0829/geex-070821/toolchain/usr/bin/i386-xnc_k-linux-uclibc-"
+UCLIBC_HAS_SYS_SIGLIST=y
+# UCLIBC_HAS_SHADOW is not set
+UCLIBC_HAS_GNU_GLOB=y
+# UCLIBC_BUILD_RELRO is not set
+# UCLIBC_BUILD_NOEXECSTACK is not set
+DEVEL_PREFIX="/usr2/wills-0708/tcdev-0.6.11b0829/geex-070821/toolchain/usr/i386-geexbox-linux-uclibc/usr/"
+TARGET_ARCH="i386"
+TARGET_i386=y
+# ASSUME_DEVPTS is not set
+MALLOC=y
+# MALLOC_930716 is not set
+MALLOC_STANDARD=y
+DO_C99_MATH=y
+# UCLIBC_HAS_IPV6 is not set
+# UCLIBC_HAS_LFS is not set
+UCLIBC_HAS_RPC=y
+UCLIBC_HAS_FULL_RPC=y
+# UCLIBC_HAS_CTYPE_UNSAFE is not set
+UCLIBC_HAS_CTYPE_CHECKED=y
+# UNIX98PTY_ONLY is not set

@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# checks
+
+DATE=`date '+%y%m'`
+if [ ${DATE} -lt 0612 ] ; then
+	echo "Date is screwy, refusing to work due to clock skew danger" 1>&2
+	exit 1
+fi
+
+MEM=`grep MemTotal /proc/meminfo | sed 's/[^:]*: *// ; s/ .*//'`
+if [ ${MEM} -lt 32000 ] ; then
+	# (Willow) poor on memory
+	SWP=`grep SwapTotal /proc/meminfo | sed 's/[^:]*: *// ; s/ .*//'`
+	if [ ${SWP} = '0' ] ; then
+		 echo "Not enough memory - enable some swap" 1>&2
+		 exit 1
+	fi
+fi
+
+# args
+
+case "$1" in
+--prune)
+	shift
+	find exttemp/* -name "*.[oa]" | while read SF ; do rm -f "${SF}" ; done
+;;
+--rm)
+	shift
+	rm -rf exttemp/*
+;;
+esac
+
+# kickoff
+
+case "$1" in
+htc|xtc|xdc|all)
+	sync
+	make ${*} 2>&1 | tee temp.txt
+;;
+*)
+	echo "Expected htc|xtc|xdc|all. Never mind. Doing nothing more" 1>&2
+	exit 1
+;;
+esac
