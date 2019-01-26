@@ -1,0 +1,137 @@
+#!/bin/sh
+##	settings-emit	(c)2006 William Towle
+##	Last modified	18/10/2006, WmT
+##	Purpose		Filter settings
+#
+#   Open Source software - copyright and GPLv2 apply. Briefly:
+#	- No warranty/guarantee of fitness, use is at own risk
+#	- No restrictions on strictly-private use/copying/modification
+#	- This license must apply also to all modified/derived works
+#	- Redistributing? Include/offer to deliver original source
+#   Philosophy/full details at http://www.gnu.org/copyleft/gpl.html
+
+pare_makefile()
+{
+	# join continued lines; strip comments to EOL
+	sed	' :a ; /\\/ { N ; s/\\\n// } ; ta
+		; s/^[ 	]*#.*//
+		' ${*} | grep .
+}
+
+emit_makfiles()
+{
+	FILE=$1
+	if [ ! -r ${FILE} ] ; then
+		echo "$0: FILE ${FILE} not found" 1>&2
+		exit 1
+	fi
+
+	pare_makefile ${FILE} | while read LINE ; do
+		set -- ${LINE}
+		case ${1} in
+		*_PACKAGE+=*)	echo "${LINE}" | sed 's/^[^=]*=//'
+		;;
+		esac
+	done
+}
+
+
+emit_makurls()
+{
+	FILE=$1
+	if [ ! -r ${FILE} ] ; then
+		echo "$0: FILE ${FILE} not found" 1>&2
+		exit 1
+	fi
+
+	pare_makefile ${FILE} | while read LINE ; do
+		set -- ${LINE}
+		case ${1} in
+		URLS=?|URLS+=*)	echo "${LINE}" | sed 's/^[^=]*=//'
+		;;
+		esac
+	done
+}
+
+emit_all_urls()
+{
+	FILE=$1
+	if [ ! -r ${FILE} ] ; then
+		echo "$0: FILE ${FILE} not found" 1>&2
+		exit 1
+	fi
+
+	emit_makfiles ${FILE} | while read MAK ; do
+		( emit_makurls `dirname ${FILE}`/${MAK} )
+	done
+}
+
+
+#######################################################################
+
+do_emit_makfiles()
+{
+	if [ -z "$1" ] ; then
+		echo "$0: do_emit_makurls(): expected FILE(s)" 1>&2
+		exit 1
+	fi
+
+	while [ "$1" ] ; do
+		FILE=$1
+		shift
+
+		emit_makfiles ${FILE}
+	done
+}
+
+do_emit_makurls()
+{
+	if [ -z "$1" ] ; then
+		echo "$0: do_emit_makurls(): expected FILE(s)" 1>&2
+		exit 1
+	fi
+
+	while [ "$1" ] ; do
+		FILE=$1
+		shift
+
+		emit_makurls ${FILE}
+	done
+}
+
+do_emit_all_urls()
+{
+	if [ -z "$1" ] ; then
+		echo "$0: do_emit_all_urls(): expected FILE(s)" 1>&2
+		exit 1
+	fi
+
+	while [ "$1" ] ; do
+		FILE=$1
+		shift
+
+		emit_all_urls ${FILE}
+	done
+}
+
+ACTION=$1
+[ "$1" ] && shift
+case ${ACTION} in
+mak-files)	## emit '.mak' list for config.mak[s]
+	do_emit_makfiles $* || exit 1
+;;
+mak-urls)	## emit URLs for Makefile[s]
+	do_emit_makurls $* || exit 1
+;;
+all-urls)	## emit URLs for config.mak[s]
+	do_emit_all_urls $* || exit 1
+;;
+*)
+	if [ "${ACTION}" -a "${ACTION}" != 'help' ] ; then
+		echo "$0: Unrecognised command '${ACTION}'" 1>&2
+	fi
+	echo "$0: Usage:" 1>&2
+	grep "^[0-9a-z-]*)" $0 | sed "s/^/	/" 1>&2
+	exit 1
+;;
+esac

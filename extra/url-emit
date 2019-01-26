@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -z "$1" ] ; then
+	echo "$0: Need SUBDIRS" 1>&2
+	exit 1
+fi
+
+for SD in ${1+"$@"} ; do
+	OUTFILE=urls-${SD}.txt
+	echo "Creating ${OUTFILE}..."
+	make -C ${SD} urls | sort -u > ${OUTFILE}
+done

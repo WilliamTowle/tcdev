@@ -1,0 +1,81 @@
+#!/usr/bin/make
+
+TOPLEV:=$(shell pwd)
+
+# |""">	Package: QEmu 0.9.1
+# |	http://fabrice.bellard.free.fr/qemu/qemu-0.9.1.tar.gz
+
+#QEMU_VER=0.8.2
+#QEMU_VER=0.9.0
+QEMU_VER=0.9.1
+QEMU_SRC=src/qemu-${QEMU_VER}.tar.gz
+QEMU_XPATH=qemu-${QEMU_VER}
+
+
+# |""">	Package: SDL 1.2.13
+#	http://www.libsdl.org/release/SDL-1.2.13.tar.gz
+
+#SDL_VER=1.2.11
+SDL_VER=1.2.13
+SDL_SRC=src/SDL-${SDL_VER}.tar.gz
+SDL_XPATH=SDL-${SDL_VER}
+
+##
+##
+
+.PHONY: help
+help:
+	grep '^[a-z][A-Za-z-]*:' Makefile | sed 's/:.*// ; s/^/	/'
+
+.PHONY: clean
+clean:
+	[ -d ${QEMU_XPATH} ] && rm -rf ${QEMU_XPATH}
+	[ -d ${SDL_XPATH} ] && rm -rf ${SDL_XPATH}
+
+.PHONY: realclean
+realclean: clean
+	rm -rf ${TOPLEV}/usr ${TOPLEV}/bin
+
+##
+##
+
+.PHONY: build-qemu
+build-qemu: ${QEMU_XPATH}/i386-softmmu/qemu
+.PHONY: install-qemu
+install-qemu: ${TOPLEV}/bin/i386-softmmu/qemu
+
+${QEMU_XPATH}/Makefile:
+	tar xvzf ${QEMU_SRC}
+
+${QEMU_XPATH}/config.status: install-SDL ${QEMU_XPATH}/Makefile
+	( cd ${QEMU_XPATH} && \
+		sdl=yes sdl_config=${TOPLEV}'/usr/bin/sdl-config' \
+			./configure --prefix=${TOPLEV}/usr )
+# ./configure: pass "--target-list="i386-softmmu x86_64-softmmu mips-softmmu i386-linux-user x84_64-linux-user mips-linux-user"?
+
+${QEMU_XPATH}/i386-softmmu/qemu: ${QEMU_XPATH}/config.status
+	( cd ${QEMU_XPATH} && make )
+
+${TOPLEV}/bin/i386-softmmu/qemu: build-qemu
+	( cd ${QEMU_XPATH} && make install )
+
+##
+##
+
+.PHONY: build-SDL
+build-SDL: ${SDL_XPATH}/build/.libs/libSDL.a
+
+.PHONY: install-SDL
+install-SDL: ${TOPLEV}/usr/lib/libSDL.a
+
+${SDL_XPATH}/Makefile:
+	tar xvzf ${SDL_SRC}
+
+${SDL_XPATH}/config.status: ${SDL_XPATH}/Makefile
+	( cd ${SDL_XPATH} && ./configure --prefix=${TOPLEV}/usr )
+
+${SDL_XPATH}/build/.libs/libSDL.a: ${SDL_XPATH}/config.status
+	( cd ${SDL_XPATH} && make )
+
+${TOPLEV}/usr/lib/libSDL.a: build-SDL
+	( cd ${SDL_XPATH} && make install )

@@ -1,0 +1,46 @@
+diff -Nuraw ../geex-090210/config.mak ../geex-090211/config.mak
+--- ../geex-090210/config.mak	2009-01-26 10:37:14.000000000 +0000
++++ ../geex-090211/config.mak	2009-02-11 16:59:36.000000000 +0000
+@@ -14,7 +14,6 @@
+ 
+ EXTTEMP:=${TOPLEV}/exttemp
+ #EXTTEMP:=/home/build-temp
+-INSTTEMP:=${TOPLEV}/insttemp
+ ifeq (${HAVE_OPT_FREGLX},y)
+ SOURCEROOT:=/opt/freglx/etc/sources
+ else
+@@ -52,13 +51,8 @@
+ TARGET_TRIPLET:=${TARGET_CPU}-geexbox-linux
+ TARGET_SPEC:=${TARGET_TRIPLET}-${TARGET_SUFFIX}
+ 
+-# <-- chroot vs packages (xdc)
+-ifeq (${MAKE_CHROOT},y)
+-XDC_INSTTEMP:=${XDC_ROOT}
+-else
++# <-- package generation (intermediate stage to chroot install)
+ PCREATE_SCRIPT:=${TOPLEV}/scripts/egp
+-XDC_INSTTEMP:=${INSTTEMP}
+-endif
+ 
+ # <-- package tracking (toolchain)
+ PTRACK_SCRIPT:=${TOPLEV}/scripts/instmgr.sh
+@@ -144,15 +138,12 @@
+ xdc-sanity: xdc-sanity-chroot
+ else
+ # combined test based on fact MAKE_CHROOT non-empty string
+-ifeq (${MAKE_CHROOT}${XDC_ROOT},y)
++ifeq (${MAKE_CHROOT}-${XDC_ROOT},y-)
+ xdc-sanity-chroot:
+ 	@echo "XDC_ROOT unset, and MAKE_CHROOT=y" ; exit 1
+ xdc-sanity: xdc-sanity-chroot
+-else
+-xdc-sanity-insttemp:
+-ifeq (${INSTTEMP},)
+-	@echo "INSTTEMP unset, and MAKE_CHROOT=n (!= y)" ; exit 1
+-endif
+-xdc-sanity: xdc-sanity-insttemp
+ endif
++
++${XDC_ROOT}:
++	mkdir -p ${XDC_ROOT}
+ endif

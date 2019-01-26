@@ -1,0 +1,39 @@
+#!/bin/sh
+# from franki/earlgrey /sbin/{mkfs, fsck}, WmT 20/04/2003
+
+ARG1=$1
+if [ -z "${ARG1}" ] ; then
+	# Would absent '-t' be a problem (...which fs to assume?)
+	echo "$0: Need '-t' argument"
+	exit 1
+elif [ "${ARG1}" != '-t' ] ; then
+	echo "$0: First argument wasn't '-t'"
+	exit 1
+else
+	shift
+fi
+
+FSTYPE=$1
+if [ -z "${FSTYPE}" ] ; then
+	echo "$0: Expected FSTYPE for '-t'"
+	exit 1
+else
+	shift
+fi
+
+if [ -r /proc/filesystems ] ; then
+	KNOWN=`grep "	${FSTYPE}$" /proc/filesystems`
+	if [ -z "$KNOWN" ] ; then
+		echo "$0: ERROR: Kernel can't mount/write filesystem ${FSTYPE}"
+		exit 1
+	fi
+fi
+
+MKFSCK=${ROOTDIR}/sbin/`basename $0`.${FSTYPE}
+if [ ! -f ${MKFSCK} ] ; then
+	echo "$0: Confused -- No ${MKFSCK} executable"
+	exit 1
+fi
+
+${MKFSCK} $* || exit 1
+echo "$0: OK"

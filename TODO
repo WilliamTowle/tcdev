@@ -1,0 +1,98 @@
+STATUS
+======
+
+
+Earlgrey - 2.0.40 kernel (modular, ~400K) w/ 600K ramdisk
+	* gcc 2.95.3-2; uClibc 0.9.20 w/ binutils 2.16.1
+	* also: busybox 0.65.x, bin86 0.16.17
+
+	- updates host-binutils, host-gcc
+
+	- 0.8|9.x Makefile/package.mak update as per geex
+	- check bison (1.8x required for package.mak standardisation)
+
+
+Sencha (sen) - 2.2.26 kernel (monolithic, ~620k) w/ 550K ramdisk
+	* gcc 2.95.3-2; uClibc 0.9.26 w/ binutils 2.16.1
+	* also: busybox 1.1.0; bin86 0.16.17
+	* proven build-in-self capable
+
+	- updates host-binutils, host-gcc
+
+
+	- 0.8|9.x Makefile/package.mak update as per geex
+	- check bison (1.8x required for package.mak standardisation)
+
+
+Bancha (ban) - 2.4.32 kernel (monolithic, 1_121_024 bytes) w/ 550K rd
+	* gcc 2.95.3-2; uClibc 0.9.26 w/ binutils 2.17
+	* also: busybox 1.1.0
+	* proven build-in-self capable
+
+	- updates host-binutils, host-gcc
+
+	- 0.8|9.x Makefile/package.mak update as per geex
+	- check bison (1.8x required for package.mak standardisation)
+
+
+Lung Ching (lch) - 2.6.x kernel (monolithic, 2_479_632 bytes), 570K rd
+	* gcc 4.1.2; uClibc 0.9.28.x w/ binutils 2.17
+	* also: busybox 1.10.4
+	* proven build-in-self capable
+
+	- URL for binutils 2.17 uclibc patches incorrect
+
+	- 0.8|9.x Makefile/package.mak update as per geex
+	- check bison (1.8x required for package.mak standardisation)
+
+
+Mao Feng (maof) - 2.6.x kernel (monolithic, size unchecked)
+	* gcc 4.1.2; uClibc 0.9.28.x w/ binutils 2.17
+	* also: busybox 1.10.4
+
+	- URL for binutils 2.17 uclibc patches incorrect
+
+	- 0.8|9.x Makefile/package.mak update as per geex
+	- check bison (1.8x required for package.mak standardisation)
+
+
+geex-{10|11}xxxx - 2.6.x kernel (monolithic, size unchecked)
+	* gcc 4.1.2; uClibc 0.9.28.3 w/ binutils 2.17
+	* also: busybox 1.2.2
+
+	- bison: v2.4.x vs v1.8x? requirements?
+
+	- binutils 2.17: build-in-self issues -- 'info' pages?
+
+	- newer 2.6(.28) kernel: test on EeePC?
+	- uClibc 0.9.30.1 had to have 'ldd.host' build disabled :(
+	- binutils 2.17|2.18|2.19: 'ld' issues (due to uC 0.9.30.1?)
+
+	- Export busybox with 'env'? (?? why)
+	- check build-in-self -- 'initrd' with lx2.6, binutils 2.17
+	- cross-native 'mkisofs' ... why runtime errors?
+	- {chroot|initrd}.mak: sanity check: parameter for mini/full?
+	- 'egp' targets need a dependency on the toolchain!
+
+
+TODO
+====
+
+	- upgrade egr's util-linux to 2.14?
+	- bison 2.4.1 warns about "--disable-largefile"
+
+
+FUTURE/WISH
+===========
+
+* binutils
+	- v2.18: genscripts.sh "bad substitution" (with MAKEINFO fix)
+	- v2.19.1 (unpatched): 'libbfd' installed incorrectly
+
+* gcc
+	- v4.2.x: doesn't like to cross-compile??
+	- v4.3.0: new library dependencies -- investigate
+
+* kernel
+	- v2.4.x: ignores complaints that '/sbin/ksyms' is missing?!
+	- v2.6.25 has a perl dependency (and patches to remove it)
